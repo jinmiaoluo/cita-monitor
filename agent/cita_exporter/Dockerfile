@@ -6,6 +6,7 @@ WORKDIR /config
 ADD . /config
 ## 安装必要的依赖包
 RUN pip3 install -r requirements.txt
+# 用 cita-cli 来获取数据
 RUN mv cita-cli /bin/cita-cli && chmod +x /bin/cita-cli
 ENV PORT=1920
 ## 运行命令

@@ -1,6 +1,10 @@
+# some default variables
 .DEFAULT_GOAL:=help
 SHELL = /bin/sh
 
+# if there are some files named 'deps' 'build' ...
+# deps will not run.
+# so we should use '.PHONY' to mark some files as phony.
 # main receipts
 .PHONY: deps build clean help
 # receipts for Code Quality
@@ -8,22 +12,29 @@ SHELL = /bin/sh
 # receipts for Testing
 .PHONY: test test-unit test-intergration
 
+# mark some receipts as silent.
 .SILENT: help
 
 ##@ Dependencies
 
 deps: ## Download the depenedencies.
+	# just print arguments to stdout
 	$(info Checking and getting dependencies)
 	# install pylint
+	# execute some commands and be silent
 	@pylint --version || pip install pylint
 
 	# intall yapf
+	# a pylint similar tool
+	# more similar to gofmt
 	@yapf --version || pip install yapf
 
 	# intall shfmt
+	# shell script parser formatter and interpreter
 	@(printf "shfmt " && shfmt --version) || brew install shfmt || (echo "Install shfmt: https://github.com/mvdan/sh" && exit 1)
 
 	# intall shellcheck
+	# gives warnings and suggestions for shell scripts
 	@shellcheck --version || brew install shellcheck || apt-get install shellcheck || (echo "install shellcheck: https://github.com/koalaman/shellcheck" && exit 1)
 
 	# install requirements for agent/cita_exporter
